@@ -13,3 +13,5 @@ local.properties
 Thumbs.db
 
 google-services.json
+
+gradle/gradle-daemon-jvm.properties
