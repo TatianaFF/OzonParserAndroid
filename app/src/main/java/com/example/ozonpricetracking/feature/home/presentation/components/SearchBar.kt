@@ -1,5 +1,6 @@
 package com.example.ozonpricetracking.feature.home.presentation.components
 
+import android.content.res.Configuration
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
@@ -10,11 +11,15 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.SearchBar
 import androidx.compose.material3.SearchBarDefaults
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import com.example.ozonpricetracking.core.products.domain.model.OzonProductInfo
+import com.example.ozonpricetracking.core.theme.OzonPriceTrackingTheme
+import com.example.ozonpricetracking.core.utils.PreviewData
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -87,5 +92,23 @@ fun SearchBar(
             searchSuggestions,
             onNavigateToProduct
         )
+    }
+}
+
+@Preview(showBackground = true, name = "Светлая тема")
+@Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES, name = "Темная тема")
+@Composable
+private fun SearchBarPreview(){
+    OzonPriceTrackingTheme {
+        Surface {
+            SearchBar(
+                products = PreviewData.products,
+                onNavigateToProduct = {},
+                query = "Apple",
+                onChangeQuery = {},
+                expanded = true,
+                onExpandedChange = {}
+            )
+        }
     }
 }

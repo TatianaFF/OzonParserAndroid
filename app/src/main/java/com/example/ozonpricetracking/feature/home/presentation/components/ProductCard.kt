@@ -1,5 +1,6 @@
 package com.example.ozonpricetracking.feature.home.presentation.components
 
+import android.content.res.Configuration
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -20,12 +21,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
+import com.example.ozonpricetracking.R
 import com.example.ozonpricetracking.core.products.domain.model.OzonProductInfo
+import com.example.ozonpricetracking.core.theme.OzonPriceTrackingTheme
+import com.example.ozonpricetracking.core.utils.PreviewData
 import com.example.ozonpricetracking.core.utils.PriceFormatter
 
 @Composable
@@ -52,6 +58,8 @@ fun ProductCard(
             AsyncImage(
                 model = product.image,
                 contentDescription = product.title,
+                placeholder = painterResource(R.drawable.product_placeholder),
+//                error = painterResource(R.drawable.ic_launcher_foreground),
                 modifier = Modifier
                     .size(80.dp)
                     .clip(RoundedCornerShape(8.dp)),
@@ -84,6 +92,21 @@ fun ProductCard(
                     )
                 }
             }
+        }
+    }
+}
+
+@Preview(showBackground = true, name = "Светлая тема")
+@Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES, name = "Темная тема")
+@Composable
+fun ProductCardPreview() {
+    OzonPriceTrackingTheme {
+        Surface {
+            ProductCard(
+                product = PreviewData.products[0],
+                onNavigateToDetails = {},
+                modifier = Modifier.padding(8.dp)
+            )
         }
     }
 }
