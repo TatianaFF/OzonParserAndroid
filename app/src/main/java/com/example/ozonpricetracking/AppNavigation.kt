@@ -1,5 +1,10 @@
 package com.example.ozonpricetracking
 
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.scaleIn
+import androidx.compose.animation.scaleOut
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -57,7 +62,19 @@ fun AppNavigation(
     NavHost(
         navController = navController,
         startDestination = HomeRoute,
-        modifier = modifier
+        modifier = modifier,
+        enterTransition = {
+            fadeIn(animationSpec = tween(200)) + scaleIn(initialScale = 0.92f, animationSpec = tween(200))
+        },
+        exitTransition = {
+            fadeOut(animationSpec = tween(200)) + scaleOut(targetScale = 0.92f, animationSpec = tween(200))
+        },
+        popEnterTransition = {
+            fadeIn(animationSpec = tween(200)) + scaleIn(initialScale = 0.92f, animationSpec = tween(200))
+        },
+        popExitTransition = {
+            fadeOut(animationSpec = tween(200)) + scaleOut(targetScale = 0.92f, animationSpec = tween(200))
+        }
     ) {
         composable<HomeRoute> {
             FirstLaunchChecker(onNavigateToDkma = {

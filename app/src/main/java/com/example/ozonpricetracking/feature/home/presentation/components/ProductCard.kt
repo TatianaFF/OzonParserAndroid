@@ -26,6 +26,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.example.ozonpricetracking.core.products.domain.model.OzonProductInfo
+import com.example.ozonpricetracking.core.utils.PriceFormatter
 
 @Composable
 fun ProductCard(
@@ -75,7 +76,7 @@ fun ProductCard(
                     modifier = Modifier.wrapContentSize()
                 ) {
                     Text(
-                        text = "${product.price} ₽",
+                        text = PriceFormatter.formatWithCurrency(product.price),
                         fontSize = 16.sp,
                         fontWeight = FontWeight.Bold,
                         color = MaterialTheme.colorScheme.primary,

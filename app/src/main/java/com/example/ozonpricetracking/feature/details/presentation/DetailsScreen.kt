@@ -62,6 +62,7 @@ import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
 import com.example.ozonpricetracking.core.products.domain.model.OzonProductWithPriceHistory
+import com.example.ozonpricetracking.core.utils.PriceFormatter
 import com.example.ozonpricetracking.feature.details.presentation.components.InteractiveLineChart
 import java.util.Calendar
 
@@ -238,7 +239,7 @@ fun ProductDeatailsContent(
                         modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp)
                     ) {
                         Text(
-                            text = "$currentPrice ₽",
+                            text = PriceFormatter.formatWithCurrency(currentPrice),
                             style = MaterialTheme.typography.headlineMedium.copy(
                                 fontSize = 32.sp,
                                 fontWeight = FontWeight.Bold,

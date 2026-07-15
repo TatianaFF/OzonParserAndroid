@@ -41,7 +41,7 @@ class MyApplication : Application() , Configuration.Provider {
             .build()
 
         val repeatingRequest = PeriodicWorkRequestBuilder<PriceUpdateWorker>(
-            12, TimeUnit.HOURS
+            6, TimeUnit.HOURS
         )
             .setConstraints(constraints)
             .build()

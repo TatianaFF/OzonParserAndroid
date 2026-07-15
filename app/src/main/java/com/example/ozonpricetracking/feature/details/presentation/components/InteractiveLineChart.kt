@@ -32,6 +32,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.ozonpricetracking.core.products.domain.model.OzonPriceHistoryInfo
 import com.example.ozonpricetracking.core.theme.OzonPriceTrackingTheme
+import com.example.ozonpricetracking.core.utils.PriceFormatter
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -53,6 +54,7 @@ fun InteractiveLineChart(data: List<OzonPriceHistoryInfo>) {
 
     // Для тултипа оставляем старый формат даты цифрами
     val tooltipDateFormatter = remember { SimpleDateFormat("dd.MM.yyyy", Locale.forLanguageTag("ru")) }
+    val tooltipTimeFormatter = remember { SimpleDateFormat("HH:mm", Locale.forLanguageTag("ru")) }
 
     // Разметка отступов внутри Canvas
     val bottomPaddingPx = 60f // Место под подписи месяцев внизу
@@ -180,7 +182,7 @@ fun InteractiveLineChart(data: List<OzonPriceHistoryInfo>) {
             )
 
             // Текст максимума (Используем скорректированный maxDataY)
-            val maxText = "${data[maxPriceIndex].price} ₽"
+            val maxText = PriceFormatter.formatWithCurrency(data[maxPriceIndex].price)
             val maxLayout = textMeasurer.measure(maxText, style = TextStyle(color = textColor))
             drawText(
                 textLayoutResult = maxLayout,
@@ -191,7 +193,7 @@ fun InteractiveLineChart(data: List<OzonPriceHistoryInfo>) {
             )
 
             // Текст минимума (Используем скорректированный minDataY)
-            val minText = "${data[minPriceIndex].price} ₽"
+            val minText = PriceFormatter.formatWithCurrency(data[minPriceIndex].price)
             val minLayout = textMeasurer.measure(minText, style = TextStyle(color = textColor))
             drawText(
                 textLayoutResult = minLayout,
@@ -211,7 +213,7 @@ fun InteractiveLineChart(data: List<OzonPriceHistoryInfo>) {
             )
 
             // Текст текущей цены (Используем скорректированный currentDataY)
-            val currentText = "${data[currentPriceIndex].price} ₽"
+            val currentText = PriceFormatter.formatWithCurrency(data[currentPriceIndex].price)
             val currentLayout = textMeasurer.measure(currentText, style = TextStyle(color = primary))
             drawText(
                 textLayoutResult = currentLayout,
@@ -342,9 +344,10 @@ fun InteractiveLineChart(data: List<OzonPriceHistoryInfo>) {
 
             // Текст внутри подсказки
             val dateStr = tooltipDateFormatter.format(Date(selectedItem.createdAt))
-            val priceStr = "${selectedItem.price} ₽"
+            val timeStr = tooltipTimeFormatter.format(Date(selectedItem.createdAt))
+            val priceStr = PriceFormatter.formatWithCurrency(selectedItem.price)
 
-            val tooltipText = "$dateStr\n$priceStr"
+            val tooltipText = "$dateStr\n$timeStr\n$priceStr"
 
             val textLayoutResult = textMeasurer.measure(text = tooltipText,style = TextStyle(
                 color = Color.White,
@@ -392,29 +395,29 @@ fun InteractiveLineChartPreview() {
     // Генерируем тестовый список истории цен для отображения в дизайнере [2]
     val mockPrices = listOf(
         // Январь 2026
-        OzonPriceHistoryInfo(0, 1200, 1767225600000L),   // 01.01.2026
-        OzonPriceHistoryInfo(0, 1150, 1768003200000L),   // 10.01.2026
-        OzonPriceHistoryInfo(0, 1300, 1768867200000L),   // 20.01.2026
+        OzonPriceHistoryInfo(0, 1200, 1767225600000L + 3600000 * 10 + 60000 * 15),   // 01.01.2026 10:15
+        OzonPriceHistoryInfo(0, 1150, 1768003200000L + 3600000 * 14 + 60000 * 30),   // 10.01.2026 14:30
+        OzonPriceHistoryInfo(0, 1300, 1768867200000L + 3600000 * 18 + 60000 * 45),   // 20.01.2026 18:45
         // Февраль 2026
-        OzonPriceHistoryInfo(0, 1250, 1769904000000L),   // 01.02.2026
-        OzonPriceHistoryInfo(0, 1400, 1770681600000L),   // 10.02.2026
-        OzonPriceHistoryInfo(0, 1350, 1771545600000L),   // 20.02.2026
+        OzonPriceHistoryInfo(0, 1250, 1769904000000L + 3600000 * 9 + 60000 * 20),    // 01.02.2026 09:20
+        OzonPriceHistoryInfo(0, 1400, 1770681600000L + 3600000 * 12 + 60000 * 0),    // 10.02.2026 12:00
+        OzonPriceHistoryInfo(0, 1350, 1771545600000L + 3600000 * 21 + 60000 * 10),   // 20.02.2026 21:10
         // Март 2026
-        OzonPriceHistoryInfo(0, 1350, 1772323200000L),   // 01.03.2026
-        OzonPriceHistoryInfo(0, 1100, 1773100800000L),   // 10.03.2026
-        OzonPriceHistoryInfo(0, 1050, 1773964800000L),   // 20.03.2026
+        OzonPriceHistoryInfo(0, 1350, 1772323200000L + 3600000 * 8 + 60000 * 5),     // 01.03.2026 08:05
+        OzonPriceHistoryInfo(0, 1100, 1773100800000L + 3600000 * 15 + 60000 * 40),   // 10.03.2026 15:40
+        OzonPriceHistoryInfo(0, 1050, 1773964800000L + 3600000 * 23 + 60000 * 55),   // 20.03.2026 23:55
         // Апрель 2026
-        OzonPriceHistoryInfo(0, 1000, 1775001600000L),   // 01.04.2026
-        OzonPriceHistoryInfo(0, 950,  1775779200000L),   // 10.04.2026
-        OzonPriceHistoryInfo(0, 900,  1776643200000L),   // 20.04.2026
+        OzonPriceHistoryInfo(0, 1000, 1775001600000L + 3600000 * 7 + 60000 * 30),    // 01.04.2026 07:30
+        OzonPriceHistoryInfo(0, 950,  1775779200000L + 3600000 * 11 + 60000 * 15),   // 10.04.2026 11:15
+        OzonPriceHistoryInfo(0, 900,  1776643200000L + 3600000 * 16 + 60000 * 50),   // 20.04.2026 16:50
         // Май 2026
-        OzonPriceHistoryInfo(0, 1000, 1777593600000L),   // 01.05.2026
-        OzonPriceHistoryInfo(0, 1100, 1778371200000L),   // 10.05.2026
-        OzonPriceHistoryInfo(0, 1250, 1779235200000L),   // 20.05.2026
+        OzonPriceHistoryInfo(0, 1000, 1777593600000L + 3600000 * 10 + 60000 * 0),    // 01.05.2026 10:00
+        OzonPriceHistoryInfo(0, 1100, 1778371200000L + 3600000 * 13 + 60000 * 25),   // 10.05.2026 13:25
+        OzonPriceHistoryInfo(0, 1250, 1779235200000L + 3600000 * 19 + 60000 * 40),   // 20.05.2026 19:40
         // Июнь 2026
-        OzonPriceHistoryInfo(0, 1350, 1780272000000L),   // 01.06.2026
-        OzonPriceHistoryInfo(0, 1500, 1781049600000L),   // 10.06.2026
-        OzonPriceHistoryInfo(0, 1450, 1781913600000L)    // 20.06.2026
+        OzonPriceHistoryInfo(0, 1350, 1780272000000L + 3600000 * 6 + 60000 * 10),    // 01.06.2026 06:10
+        OzonPriceHistoryInfo(0, 1500, 1781049600000L + 3600000 * 14 + 60000 * 50),   // 10.06.2026 14:50
+        OzonPriceHistoryInfo(0, 1450, 1781913600000L + 3600000 * 22 + 60000 * 30)    // 20.06.2026 22:30
     )
 
     // Оборачиваем в тему вашего приложения, чтобы цвета кнопок и фона подставились сами [2]
