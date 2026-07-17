@@ -1,5 +1,6 @@
 package com.example.ozonpricetracking
 
+import android.annotation.SuppressLint
 import android.app.ComponentCaller
 import android.content.Intent
 import android.os.Bundle
@@ -11,13 +12,19 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
+import com.example.ozonpricetracking.core.products.domain.usecase.CheckBatteryOptimizationUseCase
 import com.example.ozonpricetracking.core.theme.OzonPriceTrackingTheme
 import dagger.hilt.android.AndroidEntryPoint
+import jakarta.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     private val viewModel: MainViewModel by viewModels()
 
+    @Inject
+    lateinit var checkBatteryUseCase: CheckBatteryOptimizationUseCase
+
+    @SuppressLint("BatteryLife")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -35,6 +42,19 @@ class MainActivity : ComponentActivity() {
                             .padding(innerPadding)
                     )
                 }
+            }
+        }
+
+//        requestBatteryOptimizationIfNeeded()
+
+    }
+
+    private fun requestBatteryOptimizationIfNeeded() {
+        if (!checkBatteryUseCase.isBatteryOptimizationIgnored()) {
+            try {
+                startActivity(checkBatteryUseCase.getBatteryOptimizationIntent())
+            } catch (e: Exception) {
+                startActivity(checkBatteryUseCase.getFallbackIntent())
             }
         }
     }

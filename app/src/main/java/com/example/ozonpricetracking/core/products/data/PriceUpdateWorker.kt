@@ -11,6 +11,8 @@ import dagger.assisted.AssistedInject
 import kotlinx.coroutines.delay
 import timber.log.Timber
 import kotlin.random.Random
+import kotlin.time.Duration.Companion.milliseconds
+import kotlin.time.Duration.Companion.seconds
 
 @HiltWorker
 class PriceUpdateWorker @AssistedInject constructor(
@@ -45,8 +47,8 @@ class PriceUpdateWorker @AssistedInject constructor(
                 }
 
                 if (index < products.lastIndex) {
-                    val randomDelayMs = Random.nextLong(5000, 16000)
-                    delay(randomDelayMs)
+                    val randomDelay = Random.nextLong(5, 16)
+                    delay(randomDelay.seconds)
                 }
             }
             Result.success()
