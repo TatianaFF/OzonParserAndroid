@@ -6,7 +6,6 @@ import androidx.work.Configuration
 import androidx.work.Constraints
 import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.NetworkType
-import androidx.work.OutOfQuotaPolicy
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import com.example.ozonpricetracking.core.logging.CrashlyticsTree
@@ -42,15 +41,20 @@ class MyApplication : Application() , Configuration.Provider {
             .build()
 
         val repeatingRequest = PeriodicWorkRequestBuilder<PriceUpdateWorker>(
-            6, TimeUnit.HOURS
+            PERIOD, TimeUnit.HOURS
         )
             .setConstraints(constraints)
+            .setInitialDelay(PERIOD, TimeUnit.HOURS)
             .build()
 
         WorkManager.getInstance(this).enqueueUniquePeriodicWork(
             "OzonPriceTrackingWork",
-            ExistingPeriodicWorkPolicy.REPLACE,
+            ExistingPeriodicWorkPolicy.UPDATE,
             repeatingRequest
         )
+    }
+
+    companion object {
+        const val PERIOD: Long = 6
     }
 }
