@@ -130,7 +130,7 @@ fun PermissionsContent(
 
         // Статус разрешения
         PermissionStatusItem(
-            title = "📱 Фоновая работа",
+            title = "Фоновая работа",
             description = "Обновление цен даже когда приложение закрыто",
             isGranted = uiState.allGranted,
             onAction = onGrantPermission
@@ -270,32 +270,32 @@ data class VendorData(
 fun getVendorData(manufacturer: String): VendorData? {
     return when (manufacturer) {
         "samsung" -> VendorData(
-            title = "📱 Samsung: Фоновая работа",
+            title = "Samsung: Фоновая работа",
             description = "Добавьте приложение в список «Никогда не переводить в спящий режим», иначе Samsung заморозит его через 3 дня",
             actionText = "Инструкция для Samsung"
         )
         "xiaomi" -> VendorData(
-            title = "📱 Xiaomi: Автозапуск",
+            title = "Xiaomi: Автозапуск",
             description = "Разрешите автозапуск в настройках, иначе Xiaomi заблокирует фоновую работу",
             actionText = "Инструкция для Xiaomi"
         )
         "huawei" -> VendorData(
-            title = "📱 Huawei: Фоновая активность",
+            title = "Huawei: Фоновая активность",
             description = "Включите ручное управление запуском, иначе Huawei остановит приложение в фоне",
             actionText = "Инструкция для Huawei"
         )
         "oneplus" -> VendorData(
-            title = "📱 OnePlus: Оптимизация",
+            title = "OnePlus: Оптимизация",
             description = "Отключите оптимизацию батареи, иначе OnePlus ограничит фоновую работу",
             actionText = "Инструкция для OnePlus"
         )
         "oppo" -> VendorData(
-            title = "📱 Oppo: Автозапуск",
+            title = "Oppo: Автозапуск",
             description = "Разрешите автозапуск, иначе Oppo не даст приложению работать в фоне",
             actionText = "Инструкция для Oppo"
         )
         "vivo" -> VendorData(
-            title = "📱 Vivo: Фоновая активность",
+            title = "Vivo: Фоновая активность",
             description = "Включите неограниченную фоновую активность, иначе Vivo остановит приложение",
             actionText = "Инструкция для Vivo"
         )

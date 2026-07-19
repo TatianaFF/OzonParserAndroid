@@ -9,9 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
@@ -37,77 +35,16 @@ fun AppNavigation(
 ) {
     val context = LocalContext.current
 
-    val navController = rememberNavController()
-    val navBackStackEntry by navController.currentBackStackEntryAsState()
-    val currentRoute = navBackStackEntry?.destination?.route
-
     val permissionsViewModel: PermissionsScreenViewModel = hiltViewModel()
     val uiState by permissionsViewModel.uiState
-    var isPermissionsGranted by remember { mutableStateOf(uiState.allGranted) }
 
-    val isShowCreateDialog by sharedViewModel.isShowCreateDialog.collectAsState()
-    val url by sharedViewModel.url.collectAsState()
-
-    LaunchedEffect(uiState.allGranted) {
-        if (uiState.allGranted) {
-            isPermissionsGranted = true
-        }
-    }
-
-    LaunchedEffect(currentRoute) {
-        if (currentRoute != null) {
-            FirebaseAnalytics.getInstance(context).logEvent(FirebaseAnalytics.Event.SCREEN_VIEW) {
-                param(FirebaseAnalytics.Param.SCREEN_NAME, currentRoute)
-                param(FirebaseAnalytics.Param.SCREEN_CLASS, "MainActivity")
-            }
-        }
-    }
-
-    if (isShowCreateDialog) {
-        CreateProductDialog(
-            url = url,
-            onDismiss = {
-                sharedViewModel.onDismiss()
-            }
-        )
-    }
-
-    if (!isPermissionsGranted) {
-        PermissionsScreen(
-            viewModel = permissionsViewModel,
-            onNavigateToDkma = {
-                navController.navigate(DkmaRoute)
-            },
-            onPermissionsGranted = {
-                isPermissionsGranted = true
-            },
-            onSkip = {
-                isPermissionsGranted = true
-            }
-        )
-    } else {
-        MainAppContent(
-            sharedViewModel = sharedViewModel,
-            modifier = modifier
-        )
-    }
-}
-
-@Composable
-fun MainAppContent(
-    sharedViewModel: MainViewModel,
-    modifier: Modifier = Modifier
-) {
-    val context = LocalContext.current
     val navController = rememberNavController()
-
-    val isShowCreateDialog by sharedViewModel.isShowCreateDialog.collectAsState()
-    val url by sharedViewModel.url.collectAsState()
-
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
 
-    // Firebase Analytics
+    val isShowCreateDialog by sharedViewModel.isShowCreateDialog.collectAsState()
+    val url by sharedViewModel.url.collectAsState()
+
     LaunchedEffect(currentRoute) {
         if (currentRoute != null) {
             FirebaseAnalytics.getInstance(context).logEvent(FirebaseAnalytics.Event.SCREEN_VIEW) {
@@ -117,7 +54,6 @@ fun MainAppContent(
         }
     }
 
-    // Диалог создания продукта
     if (isShowCreateDialog) {
         CreateProductDialog(
             url = url,
@@ -127,10 +63,11 @@ fun MainAppContent(
         )
     }
 
-    // Навигация
+    val startDestination = remember { if (uiState.allGranted) HomeRoute else PermissionsRoute }
+
     NavHost(
         navController = navController,
-        startDestination = HomeRoute,
+        startDestination = startDestination,
         modifier = modifier,
         enterTransition = {
             fadeIn(animationSpec = tween(200)) + scaleIn(initialScale = 0.92f, animationSpec = tween(200))
@@ -145,10 +82,26 @@ fun MainAppContent(
             fadeOut(animationSpec = tween(200)) + scaleOut(targetScale = 0.92f, animationSpec = tween(200))
         }
     ) {
+        composable<PermissionsRoute> {
+            PermissionsScreen(
+                viewModel = permissionsViewModel,
+                onNavigateToDkma = {
+                    navController.navigate(DkmaRoute)
+                },
+                onPermissionsGranted = {
+                    navController.navigate(HomeRoute) {
+                        popUpTo(PermissionsRoute) { inclusive = true }
+                    }
+                },
+                onSkip = {
+                    navController.navigate(HomeRoute) {
+                        popUpTo(PermissionsRoute) { inclusive = true }
+                    }
+                }
+            )
+        }
+
         composable<HomeRoute> {
-//            FirstLaunchChecker(onNavigateToDkma = {
-//                navController.navigate(DkmaRoute)
-//            })
             HomeScreen(
                 onNavigateToProduct = { id ->
                     navController.navigate(DetailsRoute(id))
@@ -186,6 +139,9 @@ fun MainAppContent(
 
 @Serializable
 object HomeRoute
+
+@Serializable
+object PermissionsRoute
 
 @Serializable
 object DkmaRoute

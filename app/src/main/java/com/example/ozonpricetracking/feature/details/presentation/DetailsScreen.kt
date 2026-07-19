@@ -58,6 +58,7 @@ fun DetailsScreen(
     id: Long,
     onBack: () -> Unit,
     onNavigateToDkma: () -> Unit,
+    modifier: Modifier = Modifier,
     viewModel: DetailsScreenViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -71,7 +72,8 @@ fun DetailsScreen(
         onBack = onBack,
         onNavigateToDkma = onNavigateToDkma,
         onRetry = { viewModel.loadProduct(id) },
-        onDeleteProduct = { viewModel.deleteProduct(id) }
+        onDeleteProduct = { viewModel.deleteProduct(id) },
+        modifier = modifier
     )
 }
 
@@ -81,12 +83,13 @@ fun DetailsScreenContent(
     onBack: () -> Unit,
     onNavigateToDkma: () -> Unit,
     onRetry: () -> Unit,
-    onDeleteProduct: () -> Unit
+    onDeleteProduct: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
     when (uiState) {
         is ProductDetailsUiState.Loading -> {
             Box(
-                modifier = Modifier.fillMaxSize(),
+                modifier = modifier.fillMaxSize(),
                 contentAlignment = Alignment.Center
             ) {
                 CircularProgressIndicator()
@@ -98,13 +101,15 @@ fun DetailsScreenContent(
                 uiState.data,
                 onBack = onBack,
                 onNavigateToDkma = onNavigateToDkma,
-                onDeleteProduct = onDeleteProduct
+                onDeleteProduct = onDeleteProduct,
+                modifier = modifier
             )
         }
         is ProductDetailsUiState.Error -> {
             DetailsErrorContent(
                 message = uiState.message,
-                onRetry = onRetry
+                onRetry = onRetry,
+                modifier = modifier
             )
         }
     }
@@ -115,7 +120,8 @@ fun ProductDetailsContent(
     p: OzonProductWithPriceHistory,
     onBack: () -> Unit,
     onNavigateToDkma: () -> Unit,
-    onDeleteProduct: () -> Unit
+    onDeleteProduct: () -> Unit,
+    modifier: Modifier = Modifier
 ){
     val context = LocalContext.current
     var selectedPeriod by remember { mutableStateOf(Period.ONE_MONTH) }
@@ -136,7 +142,7 @@ fun ProductDetailsContent(
 
     LazyColumn(
         state = listState,
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
             .padding(8.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp)

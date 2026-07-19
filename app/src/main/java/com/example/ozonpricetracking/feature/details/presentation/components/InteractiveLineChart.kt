@@ -39,7 +39,10 @@ import java.util.Locale
 import kotlin.math.roundToInt
 
 @Composable
-fun InteractiveLineChart(data: List<OzonPriceHistoryInfo>) {
+fun InteractiveLineChart(
+    data: List<OzonPriceHistoryInfo>,
+    modifier: Modifier = Modifier
+) {
     val textColor = MaterialTheme.colorScheme.onSurfaceVariant
     val textMeasurer = rememberTextMeasurer()
     val primary = MaterialTheme.colorScheme.primary
@@ -66,7 +69,7 @@ fun InteractiveLineChart(data: List<OzonPriceHistoryInfo>) {
     LaunchedEffect(data) { selectedIndex = -1 }
 
     Canvas(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .height(200.dp)
             .background(MaterialTheme.colorScheme.surfaceContainerLow, shape = RoundedCornerShape(12.dp))

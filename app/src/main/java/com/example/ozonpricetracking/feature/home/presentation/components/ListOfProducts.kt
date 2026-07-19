@@ -16,10 +16,11 @@ import com.example.ozonpricetracking.core.utils.PreviewData
 @Composable
 fun ListOfProducts(
     products: List<OzonProductInfo>,
-    onClick: (id: Long) -> Unit
+    onClick: (id: Long) -> Unit,
+    modifier: Modifier = Modifier
 ) {
     LazyColumn(
-        modifier = Modifier.padding(top = 8.dp)
+        modifier = modifier.padding(top = 8.dp)
     ) {
         items(
             items = products,

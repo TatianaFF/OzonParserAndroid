@@ -9,15 +9,20 @@ import androidx.compose.material3.FilledIconButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.ozonpricetracking.core.theme.OzonPriceTrackingTheme
 
 @Composable
-fun AddButton(onClick: () -> Unit) {
+fun AddButton(
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
     FilledIconButton(
         onClick = onClick,
-        shape = RoundedCornerShape(12.dp)
+        shape = RoundedCornerShape(12.dp),
+        modifier = modifier
     ) {
         Icon(Icons.Default.Add, "Add")
     }

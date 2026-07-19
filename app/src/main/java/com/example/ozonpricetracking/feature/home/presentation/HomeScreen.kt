@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.HelpOutline
-import androidx.compose.material.icons.outlined.HelpOutline
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -101,8 +100,9 @@ private fun HomeScreenContent(
 
         if (!expanded)
             ListOfProducts(
-                products,
-                onNavigateToProduct
+                products = products,
+                onClick = onNavigateToProduct,
+                modifier = Modifier.weight(1f)
             )
     }
 }

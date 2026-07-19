@@ -16,6 +16,7 @@ import com.example.ozonpricetracking.feature.dkma.presentation.components.HtmlTe
 @Composable
 fun DkmaScreen(
     onBackClick: () -> Unit,
+    modifier: Modifier = Modifier,
     viewModel: DkmaViewModel = viewModel()
 ) {
     val uiState by viewModel.dkmaState.collectAsState()
@@ -25,6 +26,7 @@ fun DkmaScreen(
     }
 
     Scaffold(
+        modifier = modifier,
         topBar = {
             TopAppBar(
                 title = {  },

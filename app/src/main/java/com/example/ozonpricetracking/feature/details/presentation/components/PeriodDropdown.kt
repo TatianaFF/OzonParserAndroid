@@ -26,13 +26,15 @@ import com.example.ozonpricetracking.core.theme.OzonPriceTrackingTheme
 @Composable
 fun PeriodDropdown(
     selectedPeriod: Period,
-    onPeriodSelected: (Period) -> Unit
+    onPeriodSelected: (Period) -> Unit,
+    modifier: Modifier = Modifier
 ) {
     var expanded by remember { mutableStateOf(false) }
 
     ExposedDropdownMenuBox(
         expanded = expanded,
-        onExpandedChange = { expanded = !expanded }
+        onExpandedChange = { expanded = !expanded },
+        modifier = modifier
     ) {
         TextField(
             value = selectedPeriod.label,

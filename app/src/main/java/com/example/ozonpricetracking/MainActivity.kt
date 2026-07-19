@@ -1,6 +1,5 @@
 package com.example.ozonpricetracking
 
-import android.annotation.SuppressLint
 import android.app.ComponentCaller
 import android.content.Intent
 import android.os.Bundle
@@ -24,7 +23,6 @@ class MainActivity : ComponentActivity() {
     @Inject
     lateinit var checkBatteryUseCase: CheckBatteryOptimizationUseCase
 
-    @SuppressLint("BatteryLife")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -42,19 +40,6 @@ class MainActivity : ComponentActivity() {
                             .padding(innerPadding)
                     )
                 }
-            }
-        }
-
-//        requestBatteryOptimizationIfNeeded()
-
-    }
-
-    private fun requestBatteryOptimizationIfNeeded() {
-        if (!checkBatteryUseCase.isBatteryOptimizationIgnored()) {
-            try {
-                startActivity(checkBatteryUseCase.getBatteryOptimizationIntent())
-            } catch (e: Exception) {
-                startActivity(checkBatteryUseCase.getFallbackIntent())
             }
         }
     }
