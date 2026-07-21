@@ -2,13 +2,10 @@ package com.example.ozonpricetracking.feature.createProduct.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.work.WorkInfo
-import com.example.ozonpricetracking.feature.createProduct.data.worker.AddProductWorker
 import com.example.ozonpricetracking.feature.createProduct.domain.usecase.AddProductUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -38,27 +35,15 @@ class CreateProductDialogViewModel @Inject constructor(
         }
 
         viewModelScope.launch {
-            addProductUseCase(extractUrl(url)).collectLatest { workInfo ->
-                if (workInfo == null) return@collectLatest
-
-                when (workInfo.state) {
-                    WorkInfo.State.ENQUEUED, WorkInfo.State.RUNNING -> {
-                        _uiState.value = AddProductUiState.Loading
-                    }
-                    WorkInfo.State.SUCCEEDED -> {
-                        _uiState.value = AddProductUiState.Success
-                        onSuccess()
-                    }
-                    WorkInfo.State.FAILED -> {
-                        val error = workInfo.outputData.getString(AddProductWorker.KEY_ERROR)
-                            ?: "Ошибка при добавлении товара"
-                        _uiState.value = AddProductUiState.Error(error)
-                    }
-                    WorkInfo.State.CANCELLED -> {
-                        _uiState.value = AddProductUiState.Error("Операция отменена")
-                    }
-                    else -> {}
-                }
+            _uiState.value = AddProductUiState.Loading
+            
+            val result = addProductUseCase(extractUrl(url))
+            
+            result.onSuccess {
+                _uiState.value = AddProductUiState.Success
+                onSuccess()
+            }.onFailure { e ->
+                _uiState.value = AddProductUiState.Error(e.localizedMessage ?: "Ошибка при добавлении товара")
             }
         }
     }
