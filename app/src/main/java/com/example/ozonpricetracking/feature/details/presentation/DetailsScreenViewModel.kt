@@ -2,9 +2,9 @@ package com.example.ozonpricetracking.feature.details.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.ozonpricetracking.core.products.domain.model.OzonProductWithPriceHistory
-import com.example.ozonpricetracking.core.products.domain.usecase.DeleteProductUseCase
-import com.example.ozonpricetracking.core.products.domain.usecase.GetProductWithPriceHistory
+import com.example.ozonpricetracking.domain.model.OzonProductWithPriceHistory
+import com.example.ozonpricetracking.feature.details.domain.usecase.DeleteProductUseCase
+import com.example.ozonpricetracking.feature.details.domain.usecase.GetProductWithPriceHistory
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

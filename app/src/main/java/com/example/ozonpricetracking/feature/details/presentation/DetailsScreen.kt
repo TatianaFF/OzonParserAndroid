@@ -35,7 +35,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.example.ozonpricetracking.core.products.domain.model.OzonProductWithPriceHistory
+import com.example.ozonpricetracking.domain.model.OzonProductWithPriceHistory
 import com.example.ozonpricetracking.core.theme.OzonPriceTrackingTheme
 import com.example.ozonpricetracking.core.utils.PreviewData
 import com.example.ozonpricetracking.core.utils.PriceFormatter

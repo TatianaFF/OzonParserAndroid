@@ -52,14 +52,12 @@ fun PermissionsScreen(
     val context = LocalContext.current
     val uiState by viewModel.uiState
 
-    // Следим за изменением статуса разрешений
     LaunchedEffect(uiState.allGranted) {
         if (uiState.allGranted) {
             onPermissionsGranted()
         }
     }
 
-    // Обновляем статус при возвращении из настроек
     val lifecycleOwner = LocalLifecycleOwner.current
     DisposableEffect(lifecycleOwner) {
         val observer = LifecycleEventObserver { _, event ->
@@ -128,7 +126,6 @@ fun PermissionsContent(
 
         Spacer(modifier = Modifier.height(32.dp))
 
-        // Статус разрешения
         PermissionStatusItem(
             title = "Фоновая работа",
             description = "Обновление цен даже когда приложение закрыто",
@@ -249,13 +246,12 @@ fun VendorOptimizationItem(
         if (isPreview) "samsung" else Build.MANUFACTURER.lowercase() 
     }
 
-    // Получаем данные для конкретного вендора
     val vendorData = getVendorData(manufacturer) ?: return
 
     PermissionStatusItem(
         title = vendorData.title,
         description = vendorData.description,
-        isGranted = false, // Нельзя проверить программно
+        isGranted = false, 
         onAction = onNavigateToDkma,
         actionText = vendorData.actionText
     )
@@ -299,7 +295,7 @@ fun getVendorData(manufacturer: String): VendorData? {
             description = "Включите неограниченную фоновую активность, иначе Vivo остановит приложение",
             actionText = "Инструкция для Vivo"
         )
-        else -> null // Google, Motorola и др. — не требуют доп. настроек
+        else -> null 
     }
 }
 

@@ -2,8 +2,8 @@ package com.example.ozonpricetracking.feature.home.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.ozonpricetracking.core.products.domain.model.OzonProductInfo
-import com.example.ozonpricetracking.core.products.domain.usecase.GetProductsUseCase
+import com.example.ozonpricetracking.domain.model.OzonProductInfo
+import com.example.ozonpricetracking.feature.home.domain.usecase.GetProductsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow

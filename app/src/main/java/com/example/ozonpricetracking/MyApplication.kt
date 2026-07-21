@@ -9,7 +9,7 @@ import androidx.work.NetworkType
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import com.example.ozonpricetracking.core.logging.CrashlyticsTree
-import com.example.ozonpricetracking.core.products.data.PriceUpdateWorker
+import com.example.ozonpricetracking.data.worker.PriceUpdateWorker
 import dagger.hilt.android.HiltAndroidApp
 import timber.log.Timber
 import java.util.concurrent.TimeUnit

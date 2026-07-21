@@ -34,7 +34,6 @@
             </intent-filter>
         </activity>
 
-        <!-- Отключение стандартной инициализации WorkManager -->
         <provider
             android:name="androidx.startup.InitializationProvider"
             android:authorities="${applicationId}.androidx-startup"

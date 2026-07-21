@@ -49,30 +49,24 @@ android {
 }
 
 dependencies {
-    // Firebase
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.crashlytics)
     implementation(libs.firebase.analytics)
 
-    // Logging
     implementation(libs.timber)
 
-    // Dagger Hilt
     implementation(libs.hilt.android)
     ksp(libs.hilt.compiler)
 
-    // WorkManager + Hilt
     implementation(libs.androidx.work.runtime)
     implementation(libs.androidx.hilt.work)
     ksp(libs.androidx.hilt.compiler)
     implementation(libs.androidx.hilt.navigation.compose)
 
-    // Room Database
     implementation(libs.room.runtime)
     implementation(libs.room.ktx)
     ksp(libs.room.compiler)
 
-    // Jetpack Compose & Lifecycle
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.compose.ui)
     implementation(libs.androidx.compose.ui.graphics)
@@ -85,18 +79,16 @@ dependencies {
     implementation(libs.androidx.compose.runtime.livedata)
     implementation(libs.androidx.lifecycle.viewmodel.compose)
 
-    // Core & Async
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
+    implementation(libs.androidx.navigation.compose)
     implementation(libs.kotlin.stdlib)
     implementation(libs.kotlinx.coroutines.core)
     implementation(libs.kotlinx.serialization.json)
 
-    // Image Loading
     implementation(libs.coil.compose)
 
-    // Testing
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

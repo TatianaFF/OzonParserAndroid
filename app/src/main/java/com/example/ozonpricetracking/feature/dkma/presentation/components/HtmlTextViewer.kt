@@ -11,7 +11,6 @@ import androidx.compose.ui.viewinterop.AndroidView
 fun HtmlTextViewer(htmlContent: String, modifier: Modifier = Modifier) {
     val isDark = isSystemInDarkTheme()
 
-    // Подстраиваем цвета текста под тему приложения
     val textColor = if (isDark) "#FFFFFF" else "#000000"
     val linkColor = if (isDark) "#64B5F6" else "#1565C0"
 
@@ -80,9 +79,7 @@ fun HtmlTextViewer(htmlContent: String, modifier: Modifier = Modifier) {
                     ViewGroup.LayoutParams.MATCH_PARENT,
                     ViewGroup.LayoutParams.MATCH_PARENT
                 )
-                // Отключаем фон WebView, чтобы просвечивал фон Compose-экрана
                 setBackgroundColor(0)
-                // Принудительно устанавливаем ширину
                 setInitialScale(1)
                 settings.let {
                     it.loadWithOverviewMode = true

@@ -1,9 +1,9 @@
 package com.example.ozonpricetracking.core.utils
 
 import com.example.ozonpricetracking.R
-import com.example.ozonpricetracking.core.products.domain.model.OzonPriceHistoryInfo
-import com.example.ozonpricetracking.core.products.domain.model.OzonProductInfo
-import com.example.ozonpricetracking.core.products.domain.model.OzonProductWithPriceHistory
+import com.example.ozonpricetracking.domain.model.OzonPriceHistoryInfo
+import com.example.ozonpricetracking.domain.model.OzonProductInfo
+import com.example.ozonpricetracking.domain.model.OzonProductWithPriceHistory
 
 object PreviewData {
     val products = listOf(

@@ -9,6 +9,7 @@ coroutines = "1.7.3"
 uiText = "1.11.2"
 foundation = "1.11.2"
 animation = "1.11.2"
+navigation = "2.8.5"
 firebaseBom = "33.5.1"
 timber = "5.0.1"
 hilt = "2.52"
@@ -32,6 +33,7 @@ espressoCore = "3.7.0"
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 androidx-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycleRuntimeKtx" }
 androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activityCompose" }
+androidx-navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigation" }
 androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "composeBom" }
 androidx-compose-ui = { group = "androidx.compose.ui", name = "ui" }
 androidx-compose-ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics" }

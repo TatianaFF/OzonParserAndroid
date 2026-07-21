@@ -5,7 +5,7 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 
 import androidx.lifecycle.ViewModel
-import com.example.ozonpricetracking.core.products.domain.usecase.CheckBatteryOptimizationUseCase
+import com.example.ozonpricetracking.feature.permissions.domain.usecase.CheckBatteryOptimizationUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 

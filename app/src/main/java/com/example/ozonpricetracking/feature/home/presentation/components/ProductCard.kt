@@ -26,7 +26,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
-import com.example.ozonpricetracking.core.products.domain.model.OzonProductInfo
+import com.example.ozonpricetracking.domain.model.OzonProductInfo
 import com.example.ozonpricetracking.core.theme.OzonPriceTrackingTheme
 import com.example.ozonpricetracking.core.utils.PreviewData
 import com.example.ozonpricetracking.core.utils.PriceFormatter
@@ -55,8 +55,6 @@ fun ProductCard(
             AsyncImage(
                 model = product.image,
                 contentDescription = product.title,
-//                placeholder = painterResource(R.drawable.product_placeholder),
-//                error = painterResource(R.drawable.ic_launcher_foreground),
                 modifier = Modifier
                     .size(80.dp)
                     .clip(RoundedCornerShape(8.dp)),

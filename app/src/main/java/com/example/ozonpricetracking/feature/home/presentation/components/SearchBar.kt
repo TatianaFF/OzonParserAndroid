@@ -17,7 +17,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.example.ozonpricetracking.core.products.domain.model.OzonProductInfo
+import com.example.ozonpricetracking.domain.model.OzonProductInfo
 import com.example.ozonpricetracking.core.theme.OzonPriceTrackingTheme
 import com.example.ozonpricetracking.core.utils.PreviewData
 

@@ -9,7 +9,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
@@ -45,6 +47,30 @@ fun AppNavigation(
     val isShowCreateDialog by sharedViewModel.isShowCreateDialog.collectAsState()
     val url by sharedViewModel.url.collectAsState()
 
+    var pendingNavigation by remember { mutableStateOf<PendingNavigation?>(null) }
+
+    LaunchedEffect(pendingNavigation, navController.currentDestination) {
+        pendingNavigation?.let { navRequest ->
+            if (navController.currentDestination != null) {
+                try {
+                    when (navRequest) {
+                        is PendingNavigation.NavigateToHome -> {
+                            navController.navigate(HomeRoute) {
+                                popUpTo(PermissionsRoute) { inclusive = true }
+                            }
+                        }
+                        is PendingNavigation.NavigateToDkma -> {
+                            navController.navigate(DkmaRoute)
+                        }
+                    }
+                    pendingNavigation = null
+                } catch (e: IllegalStateException) {
+                    pendingNavigation = navRequest
+                }
+            }
+        }
+    }
+
     LaunchedEffect(currentRoute) {
         if (currentRoute != null) {
             FirebaseAnalytics.getInstance(context).logEvent(FirebaseAnalytics.Event.SCREEN_VIEW) {
@@ -63,7 +89,7 @@ fun AppNavigation(
         )
     }
 
-    val startDestination = remember { if (uiState.allGranted) HomeRoute else PermissionsRoute }
+    val startDestination = if (uiState.allGranted) HomeRoute else PermissionsRoute
 
     NavHost(
         navController = navController,
@@ -86,17 +112,13 @@ fun AppNavigation(
             PermissionsScreen(
                 viewModel = permissionsViewModel,
                 onNavigateToDkma = {
-                    navController.navigate(DkmaRoute)
+                    pendingNavigation = PendingNavigation.NavigateToDkma
                 },
                 onPermissionsGranted = {
-                    navController.navigate(HomeRoute) {
-                        popUpTo(PermissionsRoute) { inclusive = true }
-                    }
+                    pendingNavigation = PendingNavigation.NavigateToHome
                 },
                 onSkip = {
-                    navController.navigate(HomeRoute) {
-                        popUpTo(PermissionsRoute) { inclusive = true }
-                    }
+                    pendingNavigation = PendingNavigation.NavigateToHome
                 }
             )
         }
@@ -135,6 +157,11 @@ fun AppNavigation(
             )
         }
     }
+}
+
+sealed class PendingNavigation {
+    object NavigateToHome : PendingNavigation()
+    object NavigateToDkma : PendingNavigation()
 }
 
 @Serializable
