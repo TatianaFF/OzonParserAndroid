@@ -26,12 +26,8 @@ class PermissionsScreenViewModel @Inject constructor(
         )
     }
 
-    fun getBatteryIntent(): Intent {
-        return checkBatteryUseCase.getBatteryOptimizationIntent()
-    }
-
-    fun getFallbackIntent(): Intent {
-        return checkBatteryUseCase.getFallbackIntent()
+    fun getAppSettingsIntent(): Intent {
+        return checkBatteryUseCase.getAppSettingsIntent()
     }
 }
 

@@ -3,7 +3,6 @@ package com.example.ozonpricetracking.feature.details.presentation
 import android.content.Context
 import android.content.Intent
 import android.content.res.Configuration
-import android.net.Uri
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -33,12 +32,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.net.toUri
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.example.ozonpricetracking.domain.model.OzonProductWithPriceHistory
 import com.example.ozonpricetracking.core.theme.OzonPriceTrackingTheme
 import com.example.ozonpricetracking.core.utils.PreviewData
 import com.example.ozonpricetracking.core.utils.PriceFormatter
+import com.example.ozonpricetracking.domain.model.OzonProductWithPriceHistory
 import com.example.ozonpricetracking.feature.details.presentation.components.DeleteConfirmationDialog
 import com.example.ozonpricetracking.feature.details.presentation.components.DetailsErrorContent
 import com.example.ozonpricetracking.feature.details.presentation.components.EmptyHistoryPlaceholder
@@ -245,7 +245,7 @@ fun ProductDetailsContent(
 }
 
 fun Context.openLink(url: String) {
-    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+    val intent = Intent(Intent.ACTION_VIEW, url.toUri())
     startActivity(intent)
 }
 

@@ -1,6 +1,7 @@
 package com.example.ozonpricetracking.feature.permissions.presentation
 
 import android.os.Build
+import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -13,7 +14,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.BatteryAlert
-import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -75,9 +75,9 @@ fun PermissionsScreen(
         uiState = uiState,
         onGrantPermission = {
             try {
-                context.startActivity(viewModel.getBatteryIntent())
+                context.startActivity(viewModel.getAppSettingsIntent())
             } catch (e: Exception) {
-                context.startActivity(viewModel.getFallbackIntent())
+                Toast.makeText(context, "Пожалуйста, откройте настройки телефона вручную и найдите приложение в списке", Toast.LENGTH_LONG).show()
             }
         },
         onNavigateToDkma = onNavigateToDkma,
@@ -128,7 +128,7 @@ fun PermissionsContent(
 
         PermissionStatusItem(
             title = "Фоновая работа",
-            description = "Обновление цен даже когда приложение закрыто",
+            description = "Отключите все ограничения фоновой работы в настройках приложения",
             isGranted = uiState.allGranted,
             onAction = onGrantPermission
         )
@@ -158,7 +158,7 @@ fun PermissionStatusItem(
     description: String,
     isGranted: Boolean,
     onAction: () -> Unit,
-    actionText: String = "Разрешить"
+    actionText: String = "Открыть"
 ) {
     val isInstruction = actionText.contains("Инструкция", ignoreCase = true)
 
@@ -189,14 +189,14 @@ fun PermissionStatusItem(
                     modifier = Modifier.weight(1f)
                 )
 
-                if (isGranted) {
-                    Icon(
-                        imageVector = Icons.Default.CheckCircle,
-                        contentDescription = "Разрешено",
-                        tint = MaterialTheme.colorScheme.primary,
-                        modifier = Modifier.size(24.dp)
-                    )
-                }
+//                if (isGranted) {
+//                    Icon(
+//                        imageVector = Icons.Default.CheckCircle,
+//                        contentDescription = "Разрешено",
+//                        tint = MaterialTheme.colorScheme.primary,
+//                        modifier = Modifier.size(24.dp)
+//                    )
+//                }
             }
 
             Spacer(modifier = Modifier.height(4.dp))
@@ -264,38 +264,98 @@ data class VendorData(
 )
 
 fun getVendorData(manufacturer: String): VendorData? {
-    return when (manufacturer) {
+    return when (manufacturer.lowercase()) {
         "samsung" -> VendorData(
             title = "Samsung: Фоновая работа",
-            description = "Добавьте приложение в список «Никогда не переводить в спящий режим», иначе Samsung заморозит его через 3 дня",
+            description = "Отключите режим экономии и добавьте приложение в список «Никогда не переводить в спящий режим»",
             actionText = "Инструкция для Samsung"
         )
-        "xiaomi" -> VendorData(
-            title = "Xiaomi: Автозапуск",
-            description = "Разрешите автозапуск в настройках, иначе Xiaomi заблокирует фоновую работу",
+        "xiaomi", "redmi" -> VendorData(
+            title = "Xiaomi/Redmi: Автозапуск",
+            description = "Включите автозапуск и отключите оптимизацию батареи в настройках MIUI",
             actionText = "Инструкция для Xiaomi"
         )
         "huawei" -> VendorData(
             title = "Huawei: Фоновая активность",
-            description = "Включите ручное управление запуском, иначе Huawei остановит приложение в фоне",
+            description = "Включите автозапуск, вторичный запуск и работу в фоне в настройках приложения",
             actionText = "Инструкция для Huawei"
         )
-        "oneplus" -> VendorData(
-            title = "OnePlus: Оптимизация",
-            description = "Отключите оптимизацию батареи, иначе OnePlus ограничит фоновую работу",
-            actionText = "Инструкция для OnePlus"
+        "honor" -> VendorData(
+            title = "Honor: Фоновая работа",
+            description = "Отключите оптимизацию батареи и включите автозапуск в настройках",
+            actionText = "Инструкция для Honor"
         )
         "oppo" -> VendorData(
             title = "Oppo: Автозапуск",
-            description = "Разрешите автозапуск, иначе Oppo не даст приложению работать в фоне",
+            description = "Включите автозапуск в Менеджере автозапуска и отключите фоновую заморозку",
             actionText = "Инструкция для Oppo"
+        )
+        "realme" -> VendorData(
+            title = "Realme: Автозапуск",
+            description = "Включите автозапуск и отключите быструю заморозку в настройках батареи",
+            actionText = "Инструкция для Realme"
         )
         "vivo" -> VendorData(
             title = "Vivo: Фоновая активность",
-            description = "Включите неограниченную фоновую активность, иначе Vivo остановит приложение",
+            description = "Включите автозапуск и разрешите неограниченную фоновую активность",
             actionText = "Инструкция для Vivo"
         )
-        else -> null 
+        "oneplus" -> VendorData(
+            title = "OnePlus: Оптимизация",
+            description = "Отключите оптимизацию батареи в настройках приложения",
+            actionText = "Инструкция для OnePlus"
+        )
+        "lenovo" -> VendorData(
+            title = "Lenovo: Энергосбережение",
+            description = "Отключите режим энергосбережения и добавьте приложение в исключения",
+            actionText = "Инструкция для Lenovo"
+        )
+        "meizu" -> VendorData(
+            title = "Meizu: Защита приложений",
+            description = "Добавьте приложение в список защищенных в настройках батареи",
+            actionText = "Инструкция для Meizu"
+        )
+        "asus" -> VendorData(
+            title = "Asus: Умная оптимизация",
+            description = "Отключите умную оптимизацию и включите автозапуск",
+            actionText = "Инструкция для Asus"
+        )
+        "motorola" -> VendorData(
+            title = "Motorola: Оптимизация батареи",
+            description = "Отключите оптимизацию батареи в настройках приложения",
+            actionText = "Инструкция для Motorola"
+        )
+        "sony" -> VendorData(
+            title = "Sony: Режим Stamina",
+            description = "Отключите режим Stamina или добавьте приложение в исключения",
+            actionText = "Инструкция для Sony"
+        )
+        "nokia" -> VendorData(
+            title = "Nokia: Battery Protection",
+            description = "Отключите Battery Protection и оптимизацию батареи",
+            actionText = "Инструкция для Nokia"
+        )
+        "htc" -> VendorData(
+            title = "HTC: Оптимизация батареи",
+            description = "Отключите оптимизацию батареи через настройки приложения",
+            actionText = "Инструкция для HTC"
+        )
+        "blackview" -> VendorData(
+            title = "Blackview: Исключения",
+            description = "Добавьте приложение в исключения оптимизации батареи",
+            actionText = "Инструкция для Blackview"
+        )
+        "tecno" -> VendorData(
+            title = "Tecno: Автозапуск",
+            description = "Включите автозапуск и отключите HiOS оптимизацию",
+            actionText = "Инструкция для Tecno"
+        )
+        "unihertz" -> VendorData(
+            title = "Unihertz: Оптимизация",
+            description = "Отключите оптимизацию батареи в настройках",
+            actionText = "Инструкция для Unihertz"
+        )
+        else -> null
     }
 }
 

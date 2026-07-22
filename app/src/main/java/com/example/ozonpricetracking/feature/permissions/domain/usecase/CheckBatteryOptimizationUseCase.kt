@@ -1,6 +1,5 @@
 package com.example.ozonpricetracking.feature.permissions.domain.usecase
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.os.PowerManager
@@ -17,13 +16,7 @@ class CheckBatteryOptimizationUseCase @Inject constructor(
         return powerManager.isIgnoringBatteryOptimizations(context.packageName)
     }
 
-    @SuppressLint("BatteryLife")
-    fun getBatteryOptimizationIntent(): Intent {
-        return Intent(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS)
-            .setData("package:${context.packageName}".toUri())
-    }
-
-    fun getFallbackIntent(): Intent {
+    fun getAppSettingsIntent(): Intent {
         return Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
             .setData("package:${context.packageName}".toUri())
     }
